@@ -18,11 +18,7 @@ class WelcomeScreen extends StatelessWidget {
               padding: const EdgeInsets.only(top: 10),
               child: Text(
                 'Track your GitHub contributions effortlessly.',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: textColor, // Set text color to white
-                ),
+                style: textStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -65,10 +61,7 @@ class WelcomeScreen extends StatelessWidget {
               padding: const EdgeInsets.only(top: 20),
               child: Text(
                 'Track your GitHub activity, RSVP to events, and stay notified.',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: textColor, // Set text color to white
-                ),
+                style: textStyle(fontSize: 16),
                 textAlign: TextAlign.center,
               ),
             ),
