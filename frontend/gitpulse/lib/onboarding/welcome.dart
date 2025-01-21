@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '/constants.dart'; // Import the constants file
+import 'login_page.dart'; // Import the LoginPage file
 
 class WelcomeScreen extends StatelessWidget {
   @override
@@ -10,9 +11,6 @@ class WelcomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // App Logo
-            Image.asset('assets/logo.png', height: 150),
-            
             // Tagline
             Padding(
               padding: const EdgeInsets.only(top: 10),
@@ -63,6 +61,28 @@ class WelcomeScreen extends StatelessWidget {
                 'Track your GitHub activity, RSVP to events, and stay notified.',
                 style: textStyle(fontSize: 16),
                 textAlign: TextAlign.center,
+              ),
+            ),
+
+            // New "Login" Button (Green)
+            Padding(
+              padding: const EdgeInsets.only(top: 30),
+              child: ElevatedButton(
+                onPressed: () {
+                  // Navigate to the LoginPage
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                  );
+                },
+                child: Text(
+                  'Login',
+                  style: TextStyle(color: Colors.white),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green, // Green color for the button
+                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                ),
               ),
             ),
           ],
