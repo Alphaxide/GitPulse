@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import '../contribution/appbar.dart';
-import '../contribution/filter.dart';
 import '/constants.dart'; // Import the constants file
 import 'login_page.dart'; // Import the LoginPage file
 
@@ -74,7 +72,7 @@ class WelcomeScreen extends StatelessWidget {
                   // Navigate to the LoginPage
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => FiltersSection()),
+                    MaterialPageRoute(builder: (context) => LoginPage()),
                   );
                 },
                 child: Text(
