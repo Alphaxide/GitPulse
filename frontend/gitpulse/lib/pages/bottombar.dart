@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '/constants.dart';
+import 'contributionspage.dart'; // Import ContributionsPage
+
+
+
 
 class BottomNavigationBarExample extends StatefulWidget {
   @override
@@ -10,17 +15,26 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
   int _currentIndex = 0;
 
   final List<Widget> _screens = [
-    Center(child: Text("Home", style: textStyle(fontSize: 18))),
+    ContributionsPage(), // Home now shows ContributionsPage
     Center(child: Text("Contributions", style: textStyle(fontSize: 18))),
     Center(child: Text("Events", style: textStyle(fontSize: 18))),
     Center(child: Text("Notifications", style: textStyle(fontSize: 18))),
     Center(child: Text("Profile", style: textStyle(fontSize: 18))),
   ];
 
+  final List<String> _titles = [
+    "Contributions", 
+    "Contributions",
+    "Events",
+    "Notifications",
+    "Profile"
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
+      appBar: GitPulseAppBar(title: _titles[_currentIndex]), // Add AppBar
       body: _screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -34,7 +48,7 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
         selectedItemColor: Colors.white, // White for active icons
         unselectedItemColor: Colors.grey, // Light grey for inactive icons
         selectedLabelStyle: textStyle(fontSize: 12, fontWeight: FontWeight.bold),
-        unselectedLabelStyle: textStyle(fontSize: 12, fontWeight: FontWeight.normal, ),
+        unselectedLabelStyle: textStyle(fontSize: 12, fontWeight: FontWeight.normal),
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -60,4 +74,44 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
       ),
     );
   }
+}
+
+class GitPulseAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+  final double height;
+
+  GitPulseAppBar({this.height = kToolbarHeight, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+     backgroundColor: backgroundColor, // Light theme background
+      elevation: 2,
+      title: Text(
+        title,
+        style: textStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ), // Dark blue text color
+      ),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 16.0),
+          child: GestureDetector(
+            onTap: () {
+              // Navigate to the Profile Screen
+              Navigator.pushNamed(context, '/profile');
+            },
+            child: CircleAvatar(
+              backgroundImage: AssetImage('images/github.png'), // Replace with actual image
+              radius: 18,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  Size get preferredSize => Size.fromHeight(height);
 }

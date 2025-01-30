@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:gitpulse/pages/contributionspage.dart';
+
+import '../pages/appbar.dart';
+import '../pages/bottombar.dart';
+import '../pages/contributions.dart';
+import '../pages/quickaccess.dart';
+import '../pages/userprofile.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -6,16 +13,20 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Login'),
-        backgroundColor: Colors.black, // GitHub's branding color for the app bar
+        backgroundColor: Color(0xFF232F34), // Dark background matching ShadCN
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Title
+            // Title with ShadCN's text color
             Text(
               'Welcome to GitHub Login',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white, // Text color set to white
+              ),
             ),
 
             SizedBox(height: 30), // Add some space
@@ -27,12 +38,12 @@ class LoginPage extends StatelessWidget {
                 print("GitHub Login button pressed.");
               },
               icon: Image.asset(
-                'assets/github_logo.png', // GitHub logo path
+                "images/github.png", // GitHub logo path
                 height: 24, // Set the height of the logo
               ),
               label: Text(
                 'Log in with GitHub',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white), // White text
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFF24292F), // GitHub's dark gray color
@@ -45,20 +56,25 @@ class LoginPage extends StatelessWidget {
 
             SizedBox(height: 20), // Add some space between the buttons
 
-            // Optionally, you can add more login options or instructions below:
+            // Explore as Guest Button
             TextButton(
               onPressed: () {
-                // Navigate to explore as guest or another page
-                print("Explore as Guest pressed.");
+                // Navigate to explore as guest or another pageNavigator.push(
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => 
+          BottomNavigationBarExample(),),
+                  );
               },
               child: Text(
                 'Explore as Guest',
-                style: TextStyle(color: Colors.blue),
+                style: TextStyle(color: Colors.blue), // Text color for the link
               ),
             ),
           ],
         ),
       ),
+      backgroundColor: Color(0xFF232F34), // ShadCN background color
     );
   }
 }

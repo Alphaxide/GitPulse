@@ -7,17 +7,18 @@ class VisualGraphsSection extends StatelessWidget {
   final List<FlSpot> pullRequestsData;
   final List<FlSpot> issuesData;
 
-  VisualGraphsSection({
+  const VisualGraphsSection({
+    Key? key,
     required this.commitsData,
     required this.pullRequestsData,
     required this.issuesData,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 3,
-      margin: EdgeInsets.all(16),
+      margin: const EdgeInsets.all(16),
       color: backgroundColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
@@ -29,25 +30,37 @@ class VisualGraphsSection extends StatelessWidget {
               'Contribution Overview',
               style: textStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             SizedBox(
-              height: 250, // Height for the chart
+              height: 250, // Graph Height
               child: LineChart(
                 LineChartData(
                   gridData: FlGridData(show: true),
                   titlesData: FlTitlesData(
-                    leftTitles: SideTitles(
-                      showTitles: true,
-                      reservedSize: 40,
-                      getTextStyles: (context, value) =>
-                          textStyle(fontSize: 12),
-                      margin: 8,
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 40,
+                        getTitlesWidget: (value, meta) {
+                          return Text(
+                            value.toInt().toString(),
+                            style: textStyle(fontSize: 12),
+                          );
+                        },
+                       // margin: 8,
+                      ),
                     ),
-                    bottomTitles: SideTitles(
-                      showTitles: true,
-                      getTextStyles: (context, value) =>
-                          textStyle(fontSize: 12),
-                      margin: 8,
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (value, meta) {
+                          return Text(
+                            value.toInt().toString(),
+                            style: textStyle(fontSize: 12),
+                          );
+                        },
+                      //  margin: 8,
+                      ),
                     ),
                   ),
                   borderData: FlBorderData(
@@ -55,41 +68,17 @@ class VisualGraphsSection extends StatelessWidget {
                     border: Border.all(color: Colors.grey, width: 1),
                   ),
                   lineBarsData: [
-                    // Commits Line
-                    LineChartBarData(
-                      spots: commitsData,
-                      isCurved: true,
-                      colors: [Colors.green],
-                      barWidth: 3,
-                      isStrokeCapRound: true,
-                      belowBarData: BarAreaData(show: false),
-                    ),
-                    // Pull Requests Line
-                    LineChartBarData(
-                      spots: pullRequestsData,
-                      isCurved: true,
-                      colors: [Colors.blue],
-                      barWidth: 3,
-                      isStrokeCapRound: true,
-                      belowBarData: BarAreaData(show: false),
-                    ),
-                    // Issues Line
-                    LineChartBarData(
-                      spots: issuesData,
-                      isCurved: true,
-                      colors: [Colors.orange],
-                      barWidth: 3,
-                      isStrokeCapRound: true,
-                      belowBarData: BarAreaData(show: false),
-                    ),
+                    _buildLineData(commitsData, Colors.green),
+                    _buildLineData(pullRequestsData, Colors.blue),
+                    _buildLineData(issuesData, Colors.orange),
                   ],
                   lineTouchData: LineTouchData(
                     touchTooltipData: LineTouchTooltipData(
-                      tooltipBgColor: Colors.white,
+                      tooltipPadding: const EdgeInsets.all(8),
                       getTooltipItems: (touchedSpots) {
                         return touchedSpots.map((spot) {
                           return LineTooltipItem(
-                            '${spot.barIndex == 0 ? 'Commits' : spot.barIndex == 1 ? 'PRs' : 'Issues'}: ${spot.y.toInt()}',
+                            '${_getLabel(spot.barIndex)}: ${spot.y.toInt()}',
                             textStyle(fontSize: 14, fontWeight: FontWeight.bold),
                           );
                         }).toList();
@@ -99,19 +88,33 @@ class VisualGraphsSection extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 16),
-            // Legends
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildLegend('Commits', Colors.green),
-                _buildLegend('Pull Requests', Colors.blue),
-                _buildLegend('Issues', Colors.orange),
-              ],
-            ),
+            const SizedBox(height: 16),
+            _buildLegends(),
           ],
         ),
       ),
+    );
+  }
+
+  LineChartBarData _buildLineData(List<FlSpot> data, Color color) {
+    return LineChartBarData(
+      spots: data,
+      isCurved: true,
+      color: color,
+      barWidth: 3,
+      isStrokeCapRound: true,
+      belowBarData: BarAreaData(show: false),
+    );
+  }
+
+  Widget _buildLegends() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _buildLegend('Commits', Colors.green),
+        _buildLegend('Pull Requests', Colors.blue),
+        _buildLegend('Issues', Colors.orange),
+      ],
     );
   }
 
@@ -123,9 +126,22 @@ class VisualGraphsSection extends StatelessWidget {
           height: 12,
           decoration: BoxDecoration(color: color, shape: BoxShape.circle),
         ),
-        SizedBox(width: 8),
+        const SizedBox(width: 8),
         Text(label, style: textStyle(fontSize: 14)),
       ],
     );
+  }
+
+  String _getLabel(int index) {
+    switch (index) {
+      case 0:
+        return 'Commits';
+      case 1:
+        return 'PRs';
+      case 2:
+        return 'Issues';
+      default:
+        return 'Unknown';
+    }
   }
 }
